@@ -1,5 +1,5 @@
 .gradle
 .idea
-.build
-.out
-.WebService.iml
+build
+out
+WebService.iml
