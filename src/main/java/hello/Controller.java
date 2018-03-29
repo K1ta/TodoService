@@ -9,10 +9,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 @RestController
-public class HelloController {
+public class Controller {
 
-    @CrossOrigin(origins="http://localhost:63342")
-    @GetMapping(path="/todo/id")
+    @CrossOrigin(origins = "http://localhost:63342")
+    @GetMapping(path = "/todo/id")
     public Long getId() {
         Long id = 0l;
         try {
@@ -23,7 +23,7 @@ public class HelloController {
             try {
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery("select id from data where id = 0");
-                if(rs.next()) {
+                if (rs.next()) {
                     rs = stmt.executeQuery("select min(id) as id from\n" +
                             "(select id+1 as id\n" +
                             "from data\n" +

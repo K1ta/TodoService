@@ -1,4 +1,4 @@
-var inputSelector  = '.index-add-element-input';
+var inputSelector = '.index-add-element-input';
 
 function InputConstructor() {
     input = document.body.querySelector(inputSelector);

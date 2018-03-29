@@ -1,6 +1,6 @@
 package hello;
 
-public class ListItem  {
+public class ListItem {
 
     private Long id;
     private String data;
