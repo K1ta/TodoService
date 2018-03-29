@@ -33,7 +33,6 @@ function removeItem(e) {
     var xhr = new XMLHttpRequest();
     xhr.open('POST', 'http://localhost:8080/todo/remove', true);
     xhr.setRequestHeader('Content-type', 'application/json');
-    alert(JSON.stringify(ItemData));
     xhr.send(JSON.stringify(ItemData));
     if (e != null) {
         e.remove();

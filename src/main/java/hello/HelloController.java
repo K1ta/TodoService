@@ -22,15 +22,18 @@ public class HelloController {
             Connection con = DriverManager.getConnection(url, login, password);
             try {
                 Statement stmt = con.createStatement();
-                ResultSet rs = stmt.executeQuery("select min(id) as id from\n" +
-                        "(select id+1 as id\n" +
-                        "from data\n" +
-                        "except\n" +
-                        "select id\n" +
-                        "from data\n" +
-                        ") as res;");
+                ResultSet rs = stmt.executeQuery("select id from data where id = 0");
                 if(rs.next()) {
-                    id = rs.getLong(1);
+                    rs = stmt.executeQuery("select min(id) as id from\n" +
+                            "(select id+1 as id\n" +
+                            "from data\n" +
+                            "except\n" +
+                            "select id\n" +
+                            "from data\n" +
+                            ") as res;");
+                    if (rs.next()) {
+                        id = rs.getLong(1);
+                    }
                 }
                 rs.close();
                 stmt.close();
@@ -70,9 +73,8 @@ public class HelloController {
     }
 
     @CrossOrigin(origins = "http://localhost:63342")
-    @PostMapping(path = "/todo/remove", consumes="application/json")
+    @PostMapping(path = "/todo/remove")
     public void removeData(@RequestBody ListItem item) {
-        System.out.println(item.getId() + " " + item.getData());
         try {
             String url = "jdbc:postgresql://localhost:5432/todo";
             String login = "postgres";
@@ -100,7 +102,7 @@ public class HelloController {
             Connection con = DriverManager.getConnection(url, login, password);
             try {
                 Statement stmt = con.createStatement();
-                stmt.execute("INSErt into data VALUES (" + item.getId() + ",'" + item.getData() + "')");
+                stmt.execute("INSErt into data VALUES (" + getId() + ",'" + item.getData() + "')");
                 System.out.println(item.getData());
                 stmt.close();
             } finally {

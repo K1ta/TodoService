@@ -1,11 +1,13 @@
 package hello;
 
-import java.io.Serializable;
-
-public class ListItem implements Serializable {
+public class ListItem  {
 
     private Long id;
     private String data;
+
+    public ListItem() {
+
+    }
 
     public ListItem(Long id, String data) {
         this.id = id;
