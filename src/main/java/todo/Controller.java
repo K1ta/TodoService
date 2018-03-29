@@ -1,25 +1,23 @@
-package hello;
+package todo;
 
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.io.FileInputStream;
+import java.sql.*;
 import java.util.ArrayList;
+import java.util.Properties;
 
 @RestController
 public class Controller {
 
-    @CrossOrigin(origins = "http://localhost:63342")
+    @CrossOrigin
     @GetMapping(path = "/todo/id")
     public Long getId() {
         Long id = 0l;
+        Properties props = new Properties();
         try {
-            String url = "jdbc:postgresql://localhost:5432/todo";
-            String login = "postgres";
-            String password = "postgres";
-            Connection con = DriverManager.getConnection(url, login, password);
+            props.load(new FileInputStream("src/main/resources/application.properties"));
+            Connection con = DriverManager.getConnection(props.getProperty("url"), props.getProperty("login"), props.getProperty("password"));
             try {
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery("select id from data where id = 0");
@@ -46,15 +44,14 @@ public class Controller {
         return id;
     }
 
-    @CrossOrigin(origins = "http://localhost:63342")
+    @CrossOrigin
     @GetMapping(path = "/todo/all")
     public ArrayList<ListItem> getAll() {
         ArrayList<ListItem> res = new ArrayList<>();
+        Properties props = new Properties();
         try {
-            String url = "jdbc:postgresql://localhost:5432/todo";
-            String login = "postgres";
-            String password = "postgres";
-            Connection con = DriverManager.getConnection(url, login, password);
+            props.load(new FileInputStream("src/main/resources/application.properties"));
+            Connection con = DriverManager.getConnection(props.getProperty("url"), props.getProperty("login"), props.getProperty("password"));
             try {
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery("SELECT * FROM data");
@@ -72,14 +69,13 @@ public class Controller {
         return res;
     }
 
-    @CrossOrigin(origins = "http://localhost:63342")
+    @CrossOrigin
     @PostMapping(path = "/todo/remove")
     public void removeData(@RequestBody ListItem item) {
+        Properties props = new Properties();
         try {
-            String url = "jdbc:postgresql://localhost:5432/todo";
-            String login = "postgres";
-            String password = "postgres";
-            Connection con = DriverManager.getConnection(url, login, password);
+            props.load(new FileInputStream("src/main/resources/application.properties"));
+            Connection con = DriverManager.getConnection(props.getProperty("url"), props.getProperty("login"), props.getProperty("password"));
             try {
                 Statement stmt = con.createStatement();
                 stmt.execute("DELETE from data WHERE id='" + item.getId() + "'");
@@ -92,18 +88,16 @@ public class Controller {
         }
     }
 
-    @CrossOrigin(origins = "http://localhost:63342")
+    @CrossOrigin
     @PostMapping(path = "/todo/add")
     public void addData(@RequestBody ListItem item) {
+        Properties props = new Properties();
         try {
-            String url = "jdbc:postgresql://localhost:5432/todo";
-            String login = "postgres";
-            String password = "postgres";
-            Connection con = DriverManager.getConnection(url, login, password);
+            props.load(new FileInputStream("src/main/resources/application.properties"));
+            Connection con = DriverManager.getConnection(props.getProperty("url"), props.getProperty("login"), props.getProperty("password"));
             try {
                 Statement stmt = con.createStatement();
                 stmt.execute("INSErt into data VALUES (" + getId() + ",'" + item.getData() + "')");
-                System.out.println(item.getData());
                 stmt.close();
             } finally {
                 con.close();
